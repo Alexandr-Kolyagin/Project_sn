@@ -15,13 +15,18 @@
     <nav class="navbar navbar-light bg-light">
         <a class="navbar-brand" style="height: 100px; padding: 40px" href="#">Наше приложение</a>
     {% if current_user.is_authenticated %}
-    <a class="navbar-brand" href="/logout" id="username">{{ current_user.name }} {{current_user.surname}}</a>
-{% else %}
-    <p>
-        <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
-        <a class="btn btn-success" href="/login">Войти</a>
-    </p>
-{% endif %}
+        <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-primary" type="submit">Search</button>
+        </form>
+        <a class="navbar-brand" href="/logout" id="username">{{ current_user.name }} {{current_user.surname}}</a>
+
+    {% else %}
+        <p>
+            <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
+            <a class="btn btn-success" href="/login">Войти</a>
+        </p>
+    {% endif %}
     </nav>
 
 </header>

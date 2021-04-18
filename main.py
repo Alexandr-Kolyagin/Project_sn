@@ -71,7 +71,8 @@ def reqister():
         user = User(
             name=form.name.data,
             surname=form.surname.data,
-            email=form.email.data)
+            email=form.email.data
+        )
         user.set_password(form.password.data)
         db_sess.add(user)
         db_sess.commit()
