@@ -1,20 +1,22 @@
-from flask import Flask, render_template, redirect, request, make_response, session, abort
+import requests
+from bs4 import BeautifulSoup
+from flask import Flask, render_template, redirect, session
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_socketio import SocketIO, send
 
 from data import db_session
-from data.users import User
 from data.chatmessege import ChatMessages
+from data.users import User
 from forms.loginform import LoginForm
 from forms.user import RegisterForm
 
-import requests
-from bs4 import BeautifulSoup
 app = Flask(__name__)
 login_manager = LoginManager()
 login_manager.init_app(app)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
+app.config['DEBUG'] = True
 socketio = SocketIO(app)
+
 
 def get_content_html(zodiac):
     der = {}
@@ -40,12 +42,24 @@ def get_content_html(zodiac):
 def main():
     db_session.global_init("db/blogs.db")
     socketio.run(app)
-@app.route('/astronomy', methods=['POST', 'GET'])
-def astronomy():
+
+
+@app.route('/today')
+def today():
     zodiac = 'scorpio'
-    if request.method == 'GET':
-        today,tommorow = get_content_html(zodiac)
-        return render_template("main.html", img=f'static/img/zodiac/{zodiac}.png',astronomy_today=today,astronomy_tomorrow=tommorow,zodiac=zodiac)
+    today, tomorrow = get_content_html(zodiac)
+    print(today)
+    return render_template("today.html", img=f'static/img/zodiac/{zodiac}.png', astronomy_today=today,
+                           zodiac=zodiac)
+
+
+@app.route('/tomorrow')
+def tomorrow():
+    zodiac = 'scorpio'
+    today, tomorrow = get_content_html(zodiac)
+    return render_template("tomorrow.html", img=f'static/img/zodiac/{zodiac}.png',
+                           astronomy_tomorrow=tomorrow, zodiac=zodiac)
+
 
 @socketio.on('message')
 def handleMessage(data):
@@ -61,11 +75,11 @@ def handleMessage(data):
 @app.route("/")
 def index():
     db_sess = db_session.create_session()
-   # if current_user.is_authenticated:
+    # if current_user.is_authenticated:
     #    news = db_sess.query(News).filter(
-     #       (News.user == current_user) | (News.is_private != True))
-    #else:
-     #   news = db_sess.query(News).filter(News.is_private != True)
+    #       (News.user == current_user) | (News.is_private != True))
+    # else:
+    #   news = db_sess.query(News).filter(News.is_private != True)
     return render_template("index.html")
 
 

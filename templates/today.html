@@ -1,0 +1,17 @@
+{% extends "astrology.html" %}
+
+{% block astrology %}
+<p align="left">{{astronomy_today}}</p>
+{% endblock %}
+{% block tabs %}
+<div style="padding: 10px">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" id="today" aria-current="page" href="/today">Сегодня</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="tomorrow" aria-current="page" href="/tomorrow">Завтра</a>
+      </li>
+    </ul>
+</div>
+{% endblock %}

@@ -10,12 +10,12 @@
     <link rel="stylesheet" type="text/css" href="static/css/style.css" />
     <title>{{title}}</title>
 </head>
-<body >
+<body>
 <header>
-    <nav class="navbar navbar-light bg-light">
+    <nav class="navbar navbar-light" style="background-color: rgba(248 249 250 / 54%)">
         <a class="navbar-brand" style="height: 100px; padding: 40px" href="#">Наше приложение</a>
     {% if current_user.is_authenticated %}
-        <form class="d-flex">
+        <form class="d-flex" style="align: left">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-primary" type="submit">Search</button>
         </form>
@@ -30,7 +30,7 @@
     </nav>
 
 </header>
-<div style="position: relative; height: 1800px">
+<div style="position: relative;">
     {% if current_user.is_authenticated %}
     <aside>
         <div class="btn-group-vertical btn-group-lg" role="group" aria-label="Basic mixed styles example" style="padding: 30px">
