@@ -49,6 +49,25 @@
             </p>
         {% endfor %}
     </p>
+    <p>
+        {{ form.sex.label }}<br>
+        {{ form.sex() }}<br>
+        {% for subfield in form.radio %}
+            <tr>
+                <td>Мужской</td>
+                <td>Женский</td>
+            </tr>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.date_birth.label }}<br>
+        {{ form.date_birth(type="date") }}<br>
+        {% for error in form.name.errors %}
+            <p class="alert alert-danger" role="alert">
+                {{ error }}
+            </p>
+        {% endfor %}
+    </p>
     <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
     {{message}}
 </form>

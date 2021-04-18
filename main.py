@@ -83,6 +83,17 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/profile")
+def profile():
+    db_sess = db_session.create_session()
+    # if current_user.is_authenticated:
+    #    news = db_sess.query(News).filter(
+    #       (News.user == current_user) | (News.is_private != True))
+    # else:
+    #   news = db_sess.query(News).filter(News.is_private != True)
+    return render_template("profile.html")
+
+
 @app.route("/messenger")
 def messenger():
     print(session)
@@ -106,7 +117,9 @@ def reqister():
         user = User(
             name=form.name.data,
             surname=form.surname.data,
-            email=form.email.data
+            email=form.email.data,
+            sex=form.sex.data,
+            date_birth=form.date_birth.data
         )
         user.set_password(form.password.data)
         db_sess.add(user)
