@@ -1,26 +1,44 @@
 from flask import Flask, render_template, redirect, request, make_response, session, abort
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from flask_socketio import SocketIO, send
+
 from data import db_session
-from data.users import User
 from data.news import News
-import datetime
-from forms.user import RegisterForm
+from data.users import User
+from data.chatmessege import ChatMessages
 from forms.loginform import LoginForm
 from forms.news import NewsForm
-from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from forms.user import RegisterForm
+
 
 app = Flask(__name__)
 login_manager = LoginManager()
 login_manager.init_app(app)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
+socketio = SocketIO(app)
 
 
 def main():
     db_session.global_init("db/blogs.db")
-    app.run()
+    socketio.run(app)
+
+
+
+
+@socketio.on('message')
+def handleMessage(data):
+    print(f"Message: {data}")
+    send(data, broadcast=True)
+
+    db_sess = db_session.create_session()
+    message = ChatMessages(username=data['username'], msg=data['msg'])
+    db_sess.add(message)
+    db_sess.commit()
 
 
 @app.route("/")
 def index():
+
     db_sess = db_session.create_session()
     if current_user.is_authenticated:
         news = db_sess.query(News).filter(
@@ -28,6 +46,13 @@ def index():
     else:
         news = db_sess.query(News).filter(News.is_private != True)
     return render_template("index.html", news=news)
+
+
+@app.route("/messenger")
+def messenger():
+    print(session)
+    username = current_user.name
+    return render_template('message.html', username=username)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -106,7 +131,7 @@ def logout():
     return redirect("/")
 
 
-@app.route('/news',  methods=['GET', 'POST'])
+@app.route('/news', methods=['GET', 'POST'])
 @login_required
 def add_news():
     form = NewsForm()
