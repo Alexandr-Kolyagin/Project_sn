@@ -9,12 +9,13 @@ from data.chatmessege import ChatMessages
 from data.users import User
 from forms.loginform import LoginForm
 from forms.user import RegisterForm
+from checl import zodiac_serch, eng_zodiac
 
 app = Flask(__name__)
 login_manager = LoginManager()
 login_manager.init_app(app)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
-app.config['DEBUG'] = True
+app.config['DEBUG'] = False
 socketio = SocketIO(app)
 
 
@@ -46,19 +47,21 @@ def main():
 
 @app.route('/today')
 def today():
-    zodiac = 'scorpio'
+    zodiac = eng_zodiac(current_user.zodiac)
     today, tomorrow = get_content_html(zodiac)
     print(today)
-    return render_template("today.html", img=f'static/img/zodiac/{zodiac}.png', astronomy_today=today,
-                           zodiac=zodiac)
+    return render_template("today.html", img=f'static/img/zodiac/{zodiac}.png',
+                           astronomy_today=today,
+                           zodiac=str(current_user.zodiac).capitalize())
 
 
 @app.route('/tomorrow')
 def tomorrow():
-    zodiac = 'scorpio'
+    zodiac = eng_zodiac(current_user.zodiac)
     today, tomorrow = get_content_html(zodiac)
     return render_template("tomorrow.html", img=f'static/img/zodiac/{zodiac}.png',
-                           astronomy_tomorrow=tomorrow, zodiac=zodiac)
+                           astronomy_tomorrow=tomorrow,
+                           zodiac=str(current_user.zodiac).capitalize())
 
 
 @socketio.on('message')
@@ -114,11 +117,13 @@ def reqister():
             return render_template('register.html', title='Регистрация',
                                    form=form,
                                    message="Такой пользователь уже есть")
+        zodiac = zodiac_serch(form.date_birth.data)
         user = User(
             name=form.name.data,
             surname=form.surname.data,
             email=form.email.data,
             sex=form.sex.data,
+            zodiac=zodiac,
             date_birth=form.date_birth.data
         )
         user.set_password(form.password.data)

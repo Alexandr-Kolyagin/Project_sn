@@ -19,6 +19,7 @@ class User(SqlAlchemyBase, UserMixin):
     list_id_liked_authors = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     sex = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    zodiac = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     registration_date = sqlalchemy.Column(sqlalchemy.DateTime,
                                           default=datetime.datetime.now)
     date_birth = sqlalchemy.Column(sqlalchemy.Date, nullable=True)

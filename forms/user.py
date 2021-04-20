@@ -1,6 +1,6 @@
 import wtforms
 from flask_wtf import FlaskForm
-from wtforms.fields.html5 import EmailField
+from wtforms.fields.html5 import EmailField,DateField
 from wtforms.validators import DataRequired
 
 
@@ -11,5 +11,5 @@ class RegisterForm(FlaskForm):
     name = wtforms.StringField('Имя пользователя', validators=[DataRequired()])
     surname = wtforms.StringField('Фамилия пользователя', validators=[DataRequired()])
     sex = wtforms.RadioField('Пол', validators=[DataRequired()], choices=['male', 'female'])
-    date_birth = wtforms.DateField('Дата рождения')
+    date_birth = wtforms.DateField('Дата рождения', validators=[DataRequired()])
     submit = wtforms.SubmitField('Зарегистрироваться')
