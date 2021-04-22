@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="btn-group" style="margin-left: 50px">
+
+    <div class="card"
+         style="margin: 5px; height:500px; width:400px; background: rgb(0 0 0 / 0%); border-color: #aaaaaa; ">
+        <div style="margin: 25px">
+            <a href="/magicball">
+                <img class="img" src="static/img/magicball.png">
+            </a>
+        </div>
+        <div class="card-body light" align="bottom">
+            <h5 class="card-title">Узнать судьбу у магического шара</h5>
+        </div>
+    </div>
+
+    <div class="card"
+         style="margin: 5px; height:500px; width:400px; background: rgb(0 0 0 / 0%); border-color: #aaaaaa; ">
+        <div style="margin: 25px">
+            <a href="/today">
+                <img class="img" src={{img}}>
+            </a>
+        </div>
+        <div class="card-body light" align="bottom">
+            <h5 class="card-title" style="margin-left: 55px">Посмотреть гороскоп</h5>
+        </div>
+    </div>
+
+</div>
+<style>
+    .img {
+    width: 350px;
+    height: 350px
+    }
+
+</style>
+
+{% endblock %}

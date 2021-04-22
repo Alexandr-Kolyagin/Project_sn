@@ -1,6 +1,40 @@
-{% extends "astrology.html" %}
+{% extends "base.html" %}
 
 {% block content %}
-<h2>{{current_user.name}} {{current_user.surname}}<span class="badge badge-secondary"></span></h2>
+<div style="border: 1px solid white; border-radius: 10px; position: relative">
+    <img class="img" src={{img}}>
+    <div class="btn-group-vertical" style="position: absolute; top: 5px">
+        <div class="btn-group" style="">
+            <h2 class="light">{{user.name}} {{user.surname}}</h2>
+            <h6><span class="badge badge-secondary" style="margin-top: 20px">{{zodiac}}</span></h6>
+        </div>
+        <p class="light" style="font-size: 16px">Дата рождения: {{user.date_birth}}</p>
+    </div>
+    {% if user != current_user %}
+    <div class="dropdown show">
+  <a class="btn btn-primary dropdown-toggle" style="width: 200px; margin: 10px" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Действия
+  </a>
 
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+    <a class="dropdown-item" href="/add_friend/{{user.id}}">Добавить в друзья</a>
+    <a class="dropdown-item" href="#">Написать сообщение</a>
+  </div>
+</div>
+    {% endif %}
+</div>
+<hr color="#ffffff">
+
+
+<style>
+    .img {
+    width: 200px;
+    height: 200px;
+    margin: 10px;
+    }
+
+
+
+
+</style>
 {% endblock %}

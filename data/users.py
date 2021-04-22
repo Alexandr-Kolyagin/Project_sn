@@ -24,6 +24,8 @@ class User(SqlAlchemyBase, UserMixin):
                                           default=datetime.datetime.now)
     date_birth = sqlalchemy.Column(sqlalchemy.Date, nullable=True)
 
+    friends = orm.relation("Friend", back_populates='user')
+
     def set_password(self, password):
         self.hashed_password = generate_password_hash(password)
 

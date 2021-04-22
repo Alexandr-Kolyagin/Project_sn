@@ -4,3 +4,16 @@ border-color: #000000;
 border: 2px solid;
 
 }
+body {
+background: url(../img/backgrounds/background.jpg);
+}
+
+.light {
+    color: #ffffff;
+    text-shadow: #ffffff 0 0 20px;
+    font-size: 32px;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    margin: 20px
+}

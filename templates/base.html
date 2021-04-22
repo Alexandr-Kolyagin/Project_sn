@@ -13,7 +13,7 @@
 <body>
 <header>
     <nav class="navbar navbar-light" style="background-color: rgba(248 249 250 / 54%)">
-        <a class="navbar-brand" style="height: 100px; padding: 40px" href="#">Наше приложение</a>
+        <a class="navbar-brand" style="height: 80px; padding: 40px" href="/">Наше приложение</a>
     {% if current_user.is_authenticated %}
         <form class="d-flex" style="align: left">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -35,8 +35,8 @@
     <aside>
         <div class="btn-group-vertical btn-group-lg" role="group" aria-label="Basic mixed styles example" style="padding: 30px">
           <a href="/profile" class="btn btn-primary" style="border-color: black;">Профиль</a>
+          <a href="/magic" class="btn btn-primary" style="border-color: black;">Магия</a>
           <a href="/messenger" class="btn btn-primary" style="border-color: black;">Сообщения</a>
-          <a href="/messenger" class="btn btn-primary" style="border-color: black;">Интересы</a>
           <a href="/messenger" class="btn btn-primary" style="border-color: black;">Друзья</a>
           <a href="/messenger" class="btn btn-primary" style="border-color: black;">Настройки</a>
         </div>
@@ -49,12 +49,8 @@
         <div>{% block content %}{% endblock %}</div>
     </main>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
-<script type="text/javascript" charset="utf-8">
-    var socket = io();
-    socket.on('connect', function() {
-        socket.emit('my event', {data: 'I\'m connected!'});
-    });
-</script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>

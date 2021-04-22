@@ -1,17 +1,26 @@
 {% extends "base.html" %}
 {% block content %}
 
-<style>body { background: url(static/img/background.jpg); }
+<style>
 .button {
-    background:transparent;
-    border:none;
-    outline:none;
-    display:block;
+    background: rgb(0 0 0 / 0%);
     height:200px;
     width:200px;
-}</style>
-<div id="div" style="color:white"></div>
-<button onclick="t()" class="button"><img src="static/img/magicball.png"></button>
+}
+.img {
+    width: 400px;
+    height: 400px;
+}
+.ball {
+    margin-right: 300px;
+}
+
+</style>
+<div align="center" class="ball">
+    <div style="width: 500px" class="light">Расскажи что-нибудь шару, а он покажет, что на это сказала вселенная</div>
+    <a onclick="t()"><img class="img" src="static/img/magicball.png"></a>
+    <div id="div" style="color:white" class="light"></div>
+</div>
 <script> function t() {
  let arr = ['Бесспорно', 'Предрешено', 'Никаких сомнений', 'Определённо да',
                   'Можешь быть уверен в этом', 'Мне кажется — «да»', 'Вероятнее всего',
@@ -23,6 +32,9 @@
   const div = document.getElementById('div');
 div.innerHTML = arr[Math.floor((Math.random()*arr.length))]
 }
+
+
+
 
 </script>
 {% endblock %}
