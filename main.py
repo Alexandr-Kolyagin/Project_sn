@@ -1,6 +1,6 @@
-import requests
+import requests, flask_ngrok, random
 from bs4 import BeautifulSoup
-from flask import Flask, render_template, redirect, session
+from flask import Flask, render_template, redirect, session, Blueprint, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_socketio import SocketIO, send
 
@@ -13,10 +13,23 @@ from checl import zodiac_serch, eng_zodiac
 
 app = Flask(__name__)
 login_manager = LoginManager()
+app.config['JSON_AS_ASCII'] = False
 login_manager.init_app(app)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 app.config['DEBUG'] = False
 socketio = SocketIO(app)
+flask_ngrok.run_with_ngrok(app)
+byckvi = 'qwertyuipasdfghjkzxcvbnm23456789QWERTYUPASDFGHJKLZXCVBNM'
+blueprint = Blueprint(
+    'news_api',
+    __name__,
+    template_folder='templates'
+)
+
+
+def generate_password():
+    x = ''.join(random.sample(byckvi, 10))
+    return x
 
 
 def get_content_html(zodiac):
@@ -84,6 +97,11 @@ def index():
     # else:
     #   news = db_sess.query(News).filter(News.is_private != True)
     return render_template("index.html")
+
+
+@app.route("/magicball")
+def magic_ball():
+    return render_template('mb8.html', title='magicball8')
 
 
 @app.route("/profile")
@@ -159,6 +177,19 @@ def login():
 def logout():
     logout_user()
     return redirect("/")
+
+
+@app.route('/api/<zodiac>')
+def get_news(zodiac):
+    today, tomorrow = get_content_html(zodiac)
+    return jsonify(
+        {'zodiac_name': zodiac,
+         'zodiac_today':
+             today.replace('\n', ''),
+         'zodiac_tommorow':
+             tomorrow.replace('\n', '')
+         }
+    )
 
 
 if __name__ == '__main__':

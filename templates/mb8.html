@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>body { background: url(static/img/background.jpg); }
+.button {
+    background:transparent;
+    border:none;
+    outline:none;
+    display:block;
+    height:200px;
+    width:200px;
+}</style>
+<div id="div" style="color:white"></div>
+<button onclick="t()" class="button"><img src="static/img/magicball.png"></button>
+<script> function t() {
+ let arr = ['Бесспорно', 'Предрешено', 'Никаких сомнений', 'Определённо да',
+                  'Можешь быть уверен в этом', 'Мне кажется — «да»', 'Вероятнее всего',
+                  'Хорошие перспективы', 'Знаки говорят — «да»', 'Да',
+                  'Пока не ясно, попробуй снова',
+                  'Спроси позже', 'Лучше не рассказывать', 'Сейчас нельзя предсказать',
+                  'Сконцентрируйся и спроси опять', 'Даже не думай', 'Мой ответ — «нет»',
+                  'По моим данным — «нет»', 'Перспективы не очень хорошие', 'Весьма сомнительно'];
+  const div = document.getElementById('div');
+div.innerHTML = arr[Math.floor((Math.random()*arr.length))]
+}
+
+</script>
+{% endblock %}
