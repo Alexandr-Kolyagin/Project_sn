@@ -4,8 +4,8 @@ import requests
 from bs4 import BeautifulSoup
 from flask import Flask, render_template, redirect, Blueprint, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-
-from checl import zodiac_serch, eng_zodiac
+import flask_ngrok
+from checl import zodiac_serch, eng_zodiac, rus_zodiac
 from data import db_session
 from data.users import User
 from data.friends import Friend
@@ -41,7 +41,8 @@ def today():
     print(today)
     return render_template("today.html", img=f'static/img/zodiac/{zodiac}.png',
                            astronomy_today=today,
-                           zodiac=str(current_user.zodiac).capitalize(), title='Гороскоп на сегодня')
+                           zodiac=str(current_user.zodiac).capitalize(),
+                           title='Гороскоп на сегодня')
 
 
 @app.route('/tomorrow')
@@ -67,6 +68,7 @@ def index():
 @app.route("/magic")
 def magic():
     zodiac = eng_zodiac(current_user.zodiac)
+
     return render_template('magic.html', title='Магия', img=f'static/img/zodiac/{zodiac}.png')
 
 
@@ -81,7 +83,8 @@ def profile(id):
     user = db_sess.query(User).filter(User.id == id).first()
     zodiac = eng_zodiac(user.zodiac)
     return render_template("profile.html", zodiac=str(user.zodiac).capitalize(),
-                           img=f'static/img/zodiac/{zodiac}.png', title=user.name + " " + user.surname, user=user)
+                           img=f'static/img/zodiac/{zodiac}.png',
+                           title=user.name + " " + user.surname, user=user)
 
 
 @app.route('/add_friend/<int:id>', methods=['GET', 'POST'])
@@ -164,7 +167,7 @@ def logout():
 
 
 @app.route('/api/<zodiac>')
-def get_news(zodiac):
+def get_zodiac(zodiac):
     today, tomorrow = get_content_html(zodiac)
     return jsonify(
         {'zodiac_name': zodiac,
@@ -175,6 +178,24 @@ def get_news(zodiac):
          }
     )
 
+
+@app.route('/api/users_data/<user_id>')
+def get_data(user_id):
+    db_sess = db_session.create_session()
+    if db_sess.query(User).filter(User.id == user_id).first():
+        user = db_sess.query(User).filter(User.id == user_id).first()
+        return jsonify(
+            {
+                'user_id': user.id,
+                'user_name': user.name,
+                'user_zodiac': eng_zodiac(user.zodiac),
+                'user_birth': user.date_birth,
+                'user_sex': user.sex,
+                'user_admin': user.admin
+            }
+        )
+    else:
+        return 'Данного пользователя не существует'
 
 def generate_password():
     x = ''.join(random.sample(symbols, 10))

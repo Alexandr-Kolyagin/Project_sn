@@ -44,3 +44,21 @@ def eng_zodiac(rus_zodic):
         'козерог': 'capricorn',
     }
     return zodiacs_name[rus_zodic]
+
+
+def rus_zodiac(eng_zodiac):
+    zodiacs_name = {
+        'aquarius': 'водолей',
+        'pisces': 'рыбы',
+        'aries': 'овен',
+        'taurus': 'телец',
+        'gemini': 'близнецы',
+        'cancer': 'рак',
+        'leo': 'лев',
+        'virgo': 'дева',
+        'libra': 'весы',
+        'scorpio': 'скорпион',
+        'sagittarius': 'стрелец',
+        'capricorn': 'козерог',
+    }
+    return zodiacs_name[eng_zodiac]

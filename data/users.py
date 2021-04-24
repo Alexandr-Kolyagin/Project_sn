@@ -23,7 +23,7 @@ class User(SqlAlchemyBase, UserMixin):
     registration_date = sqlalchemy.Column(sqlalchemy.DateTime,
                                           default=datetime.datetime.now)
     date_birth = sqlalchemy.Column(sqlalchemy.Date, nullable=True)
-
+    admin = sqlalchemy.Column(sqlalchemy.Boolean, default=False)
     friends = orm.relation("Friend", back_populates='user')
 
     def set_password(self, password):
@@ -31,4 +31,3 @@ class User(SqlAlchemyBase, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.hashed_password, password)
-
