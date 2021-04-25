@@ -1,6 +1,7 @@
 import smtplib
 
-def email_password_forgot(old_email,new_password):
+
+def email_password_forgot(old_email, new_password):
     from email.mime.multipart import MIMEMultipart
     from email.mime.text import MIMEText
 
@@ -18,7 +19,7 @@ def email_password_forgot(old_email,new_password):
 
     server = smtplib.SMTP('smtp.mail.ru', 587)
     server.set_debuglevel(
-    True)
+        True)
     server.starttls()
     server.login(addr_from, password)
     server.send_message(msg)

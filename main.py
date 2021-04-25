@@ -4,12 +4,14 @@ import requests
 from bs4 import BeautifulSoup
 from flask import Flask, render_template, redirect, Blueprint, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-import flask_ngrok
-from checl import zodiac_serch, eng_zodiac, rus_zodiac
+
+from checl import zodiac_serch, eng_zodiac
 from data import db_session
-from data.users import User
 from data.friends import Friend
+from data.users import User
+from email_senf import email_password_forgot
 from forms.loginform import LoginForm
+from forms.repassword import RepasswordForm
 from forms.user import RegisterForm
 
 app = Flask(__name__)
@@ -70,6 +72,24 @@ def magic():
     zodiac = eng_zodiac(current_user.zodiac)
 
     return render_template('magic.html', title='Магия', img=f'static/img/zodiac/{zodiac}.png')
+
+
+@app.route("/friends")
+def friends():
+    db_sess = db_session.create_session()
+    friends_id = [friend.user_friend_id for friend in db_sess.query(Friend).filter(Friend.user_id == current_user.id)]
+    my_friends = db_sess.query(User).filter(User.id.in_(friends_id))
+    my_friends = list(my_friends)
+    new_my_friends = []
+    f4 = []
+    for f in my_friends:
+        f4.append(f)
+        if len(f4) == 4:
+            new_my_friends.append(f4)
+            f4 = []
+    if f4:
+        new_my_friends.append(f4)
+    return render_template('friends.html', title='Друзья', friends=new_my_friends)
 
 
 @app.route("/magicball")
@@ -166,6 +186,24 @@ def logout():
     return redirect("/")
 
 
+@app.route('/repassword', methods=['GET', 'POST'])
+def repassword():
+    form = RepasswordForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).filter(User.email == form.email.data).first()
+        if user:
+            password = generate_password()
+            email_password_forgot(form.email.data, password)
+            user.set_password(password)
+            db_sess.commit()
+            return redirect("/")
+        return render_template('repassword.html',
+                               message="Несуществует аккаунта с указанной почтой",
+                               form=form, title='Сброс пароля')
+    return render_template('repassword.html', form=form, title='Сброс пароля')
+
+
 @app.route('/api/<zodiac>')
 def get_zodiac(zodiac):
     today, tomorrow = get_content_html(zodiac)
@@ -196,6 +234,7 @@ def get_data(user_id):
         )
     else:
         return 'Данного пользователя не существует'
+
 
 def generate_password():
     x = ''.join(random.sample(symbols, 10))
