@@ -13,7 +13,7 @@ from email_senf import email_password_forgot
 from forms.loginform import LoginForm
 from forms.repassword import RepasswordForm
 from forms.user import RegisterForm
-
+import flask_ngrok
 app = Flask(__name__)
 
 login_manager = LoginManager()
@@ -22,7 +22,7 @@ login_manager.init_app(app)
 app.config['JSON_AS_ASCII'] = False
 app.config['DEBUG'] = True
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
-# flask_ngrok.run_with_ngrok(app)
+flask_ngrok.run_with_ngrok(app)
 symbols = 'qwertyuipasdfghjkzxcvbnm23456789QWERTYUPASDFGHJKLZXCVBNM'
 blueprint = Blueprint(
     'news_api',
@@ -98,6 +98,7 @@ def magic_ball():
 
 
 @app.route("/<int:id>")
+@login_required
 def profile(id):
     db_sess = db_session.create_session()
     user = db_sess.query(User).filter(User.id == id).first()
@@ -233,7 +234,7 @@ def get_data(user_id):
             }
         )
     else:
-        return 'Данного пользователя не существует'
+        return jsonify({'message' : 'error'})
 
 
 def generate_password():
